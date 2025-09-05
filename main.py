@@ -21,16 +21,19 @@ def resolvent(c1, c2, lit):
     raise ValueError(f"Literal '{lit}' kommt nicht komplementär in {set(c1)} und {set(c2)} vor")
 
 
-def all_resolvents(c1, c2):
+def all_resolvents(c1, c2, known_clauses):
     resolvents = set()
     for lit in c1:
         nlit = negate(lit)
         if nlit in c2:
             res = resolvent(c1, c2, lit)
-            print(f"  • cut zwischen {set(c1)} und {set(c2)} über '{lit}' → {GREEN}{set(res)}{RESET}")
-            resolvents.add(frozenset(res))
+            if res in known_clauses:
+                print(f"{YELLOW}  • cut zwischen {set(c1)} und {set(c2)} über '{lit}' aber Resolvente {set(res)} schon bekannt {RESET}")
+            else:
+                print(f"{GREEN}  • cut zwischen {set(c1)} und {set(c2)} über '{lit}' → {set(res)}{RESET}")
+                resolvents.add(frozenset(res))
         else:
-            print(f"  • {YELLOW}kein cut zwischen {set(c1)} und {set(c2)} über '{lit}' möglich{RESET}")
+            print(f"  • {RED}kein cut zwischen {set(c1)} und {set(c2)} über '{lit}' möglich{RESET}")
     return resolvents
 
 
@@ -41,11 +44,10 @@ def resolution_level(known_clauses):
     print(f"\n{BOLD}Systematische Anwendung der Schnittregel:\n{RESET}")
     resolvents = set()
     for c1, c2 in combinations(known_clauses, 2):
-        resolvents |= all_resolvents(c1, c2)
+        resolvents |= all_resolvents(c1, c2, known_clauses)
 
     print(f"\n{BOLD}Neue Resolventen auf diesem Level:{RESET}")
     print_clauses(resolvents)
-
     
     return resolvents
 
@@ -53,9 +55,9 @@ def full_resolution(clauses):
     level_num = 1
     all_clauses = clauses
     while True:
-        print(f"\n{'='*40}")
+        print(f"\n{'='*80}")
         print(f"{BOLD}Level {level_num}{RESET}")
-        print(f"{'='*40}\n")
+        print(f"{'='*80}\n")
         
         new_resolvents = resolution_level(all_clauses)
         if not new_resolvents:
