@@ -1,4 +1,5 @@
 from itertools import combinations
+from utils import print_clauses
 
 # ANSI-Farbcodes
 BOLD = "\033[1m"
@@ -18,6 +19,8 @@ def resolvent(c1, c2, lit):
     elif nlit in c1 and lit in c2:
         return (c1 - {nlit} | c2 - {lit})
     raise ValueError(f"Literal '{lit}' kommt nicht komplementär in {set(c1)} und {set(c2)} vor")
+
+
 def all_resolvents(c1, c2):
     resolvents = set()
     for lit in c1:
@@ -30,19 +33,18 @@ def all_resolvents(c1, c2):
             print(f"  • {YELLOW}kein cut zwischen {set(c1)} und {set(c2)} über '{lit}' möglich{RESET}")
     return resolvents
 
-def resolution_level(clauses):
+
+def resolution_level(known_clauses):
     print(f"{BOLD}alle Klauseln auf diesem Level:{RESET}")
-    for c in clauses:
-        print(" -", set(c))
+    print_clauses(known_clauses)
     
     print(f"\n{BOLD}Systematische Anwendung der Schnittregel:\n{RESET}")
     resolvents = set()
-    for c1, c2 in combinations(clauses, 2):
+    for c1, c2 in combinations(known_clauses, 2):
         resolvents |= all_resolvents(c1, c2)
 
     print(f"\n{BOLD}Neue Resolventen auf diesem Level:{RESET}")
-    for r in resolvents:
-        print(f" - {GREEN}{set(r)}{RESET}")
+    print_clauses(resolvents)
 
     
     return resolvents
