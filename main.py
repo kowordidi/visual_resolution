@@ -76,4 +76,4 @@ if __name__ == "__main__":
         frozenset({"¬B"})
     }
     final_clauses = full_resolution(initial_clauses)
-    print(final_clauses)
+    print_clauses(final_clauses)
