@@ -1,12 +1,13 @@
 from resolution import full_resolution
+import json
 
 if __name__ == "__main__":
-    initial = {
-        frozenset({"A", "B"}),
-        frozenset({"¬A", "B"}),
-        frozenset({"¬B"})
-    }
+    initial = [
+        ["A", "B"],
+        ["¬A", "B"],
+        ["¬B"]
+    ]
+    
     result = full_resolution(initial)
-    import json
+    
     print(json.dumps(result, indent=2, ensure_ascii=False))
-

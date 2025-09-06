@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Visual Resolution</title>
+</head>
+<body>
+    <h1>Visuelle Resolution</h1>
+    <p>Das ist meine erste HTML-Seite auf localhost.</p>
+
+    <textarea id="userInput" rows="5" cols="40">[["A","B"],["!A","B"],["!B"]]</textarea>
+    <button id="sendBtn">Senden</button>
+
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('sendBtn').addEventListener('click', () => {
+            const value = document.getElementById('userInput').value;
+            let clauses;
+
+            try {
+                clauses = JSON.parse(value);
+            } catch (err) {
+                alert("Ungültiges JSON!");
+                return;
+            }
+
+            fetch('http://127.0.0.1:5000/resolve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ clauses })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').innerText = 'Antwort: ' + JSON.stringify(data);
+            })
+            .catch(error => {
+                console.error('Fehler:', error);
+                document.getElementById('response').innerText = error;
+            });
+        });
+    </script>
+</body>
+</html>
