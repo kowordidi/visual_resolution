@@ -3,6 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Visual Resolution</title>
+    <style>
+    /* Einfache Styles für Levels, Klauseln und neue Resolvents */
+    .level-box {
+        border: 1px solid gray;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #fafafa;
+    }
+    .new-resolvent {
+        color: green;
+        font-weight: bold;
+    }
+    .clauses {
+        color: blue;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .no-new {
+        color: red;
+        font-weight: bold;
+    }
+</style>
 </head>
 <body>
     <h1>Visuelle Resolution</h1>
@@ -11,8 +33,7 @@
     <textarea id="userInput" rows="1" cols="50">[["A","B"],["!A","B"],["!B"]]</textarea>
     <button id="sendBtn">Senden</button>
 
-    <!-- <pre> sorgt dafür, dass Zeilenumbrüche und Einrückungen angezeigt werden -->
-    <pre id="response" style="background-color:#f0f0f0; padding:10px;"></pre>
+    <div id="resolution-container"></div>
 
     <script>
         document.getElementById('sendBtn').addEventListener('click', () => {
@@ -35,13 +56,59 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('response').textContent = JSON.stringify(data, null, 4);
+                visualize_resolution(data);
             })
             .catch(error => {
                 console.error('Fehler:', error);
-                document.getElementById('response').innerText = error;
             });
         });
+
+        function visualize_resolution(data) {
+            const container = document.getElementById('resolution-container');
+            container.innerHTML = '';
+
+            data.forEach(level => {
+                const levelDiv = document.createElement('div');
+                levelDiv.className = 'level-box';
+
+
+                const levelTitle = document.createElement('h3');
+                levelTitle.textContent = `level ${level.level}`;
+                levelDiv.appendChild(levelTitle);
+
+                // Alle aktuellen Klauseln
+                const clauseList = document.createElement('div')
+                clauseList.className = 'clauses'
+                clauseList.textContent = 'Auf diesem Level bekannte Klauseln: ' + level.clauses.map(c => `[${c.join(', ')}]`).join(', ');
+                levelDiv.appendChild(clauseList);
+
+                // Schritte im Level
+                const stepsDiv = document.createElement('ul');
+                level.steps.forEach(step => {
+                    const li = document.createElement('li');
+                    li.textContent = `[${step.c1.join(', ')}], [${step.c2.join(', ')}], literal: ${step.literal}, type: ${step.type}`;
+                    stepsDiv.appendChild(li);
+                });
+                levelDiv.appendChild(stepsDiv);
+
+                // neue Resolventen hervorheben
+                if (level.new_resolvents.length > 0) {
+                    const newRes = document.createElement('div');
+                    newRes.className = 'new-resolvent';
+                    newRes.textContent = 'Neue Resolventen in diesem level: ' + level.new_resolvents.map(c => `[${c.join(', ')}]`).join(', ');
+                    levelDiv.appendChild(newRes);
+                } else {
+                    const noNew = document.createElement('div');
+                    noNew.className = 'no-new';
+                    noNew.textContent = 'Keine neuen Klauseln mehr → Schnittregelabschluss vollständig';
+                    levelDiv.appendChild(noNew);
+                }
+
+
+                container.appendChild(levelDiv);
+
+            });
+        }
     </script>
 </body>
 </html>

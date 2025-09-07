@@ -1,6 +1,6 @@
 # Visual Resolution
 
-## Usefull terminal commands
+## Useful terminal commands
 - Activate Virtual Environment:  
 `source .venv/bin/activate`
 - Start Server  

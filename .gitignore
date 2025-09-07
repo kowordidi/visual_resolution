@@ -1,0 +1,19 @@
+# Virtuelle Umgebung
+.venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# IDE / Editor
+.vscode/
+
+# Testverzeichnisse
+/tests/
+
+# Logs (falls du welche erzeugst)
+*.log
+
+# Node / npm (falls du npx serve benutzt)
+node_modules/
