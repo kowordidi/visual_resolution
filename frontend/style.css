@@ -1,0 +1,80 @@
+body {
+            font-family: Arial, sans-serif;
+        }
+
+        .level-box {
+            border: 1px solid #aaa;
+            padding: 10px;
+            margin: 15px 0;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .level-box.visible {
+            opacity: 1;
+        }
+
+        .new-resolvent {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .clauses {
+            color: #0033cc;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .no-new {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .step {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .step.visible {
+            opacity: 1;
+        }
+
+        #nextBtn {
+            display: none;
+            margin-top: 20px;
+            margin-right: 100px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            float: right;
+    
+        }
+
+        #nextBtn:disabled {
+            background: gray;
+            cursor: not-allowed;
+        }
+
+        .step.cut_new {
+            color: green;
+            font-weight: bold;
+        }
+
+        .step.no_cut {
+            color: red;
+            font-weight: bold;
+        }
+
+        .step.cut_known {
+            color: gray;
+            font-style: italic;
+        }
+

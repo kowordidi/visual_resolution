@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Visual Resolution</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <h1>Visuelle Resolution</h1>
+    <p>Gib deine Klauseln hier ein:</p>
+
+    <textarea id="userInput" rows="1" cols="50">[["A","B"],["!A","B"],["!B"]]</textarea>
+    <div id="button-container">
+        <button id="sendBtn">Senden</button>
+        <button id="nextBtn" disabled>Nächster Schritt</button>
+        <div style="clear: both;"></div> <!--damit der Resolution Container nicht nextBtn überlappt-->
+    </div>
+
+    <div id="resolution-container"></div>
+
+</body>
+</html>
