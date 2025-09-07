@@ -3,7 +3,22 @@ let currentLevel = 0;
 let currentStep = 0;
 let showingLevel = false;
 
-document.getElementById('sendBtn').addEventListener('click', () => {
+const sendBtn = document.getElementById('sendBtn');
+const nextBtn = document.getElementById('nextBtn');
+const showAllBtn = document.getElementById('showAllBtn');
+const container = document.getElementById('resolution-container');
+
+console.log('sendBtn.disabled', sendBtn.disabled);
+console.log('nextBtn.disabled', nextBtn.disabled);
+console.log('showAllBtn.disabled', showAllBtn.disabled);
+
+window.addEventListener('DOMContentLoaded', () => {
+    nextBtn.disabled = true;
+    showAllBtn.disabled = true;
+});
+
+
+sendBtn.addEventListener('click', () => {
     const value = document.getElementById('userInput').value;
     let clauses;
 
@@ -27,27 +42,33 @@ document.getElementById('sendBtn').addEventListener('click', () => {
         currentLevel = 0;
         currentStep = 0;
         showingLevel = false;
-        document.getElementById('resolution-container').innerHTML = '';
-        document.getElementById('nextBtn').disabled = false;
-        document.getElementById('nextBtn').style.display = 'inline-block';
-        document.getElementById('nextBtn').click(); // zeigt die erste Zeile schonmal
+        container.innerHTML = '';
+
+        // Buttons nach erfolgreichem Laden aktivieren
+        nextBtn.disabled = false;
+        showAllBtn.disabled = false;
+
+        // einmal automatisch die erste Zeile aufdecken
+        showNextStep();
+
     })
     .catch(error => {
         console.error('Fehler:', error);
     });
 });
 
-document.getElementById('nextBtn').addEventListener('click', () => {
-    if (currentLevel >= allLevels.length) {
-        document.getElementById('nextBtn').disabled = true;
-        alert("Alle Schritte abgeschlossen!");
-        return;
+nextBtn.addEventListener('click', () => {
+    showNextStep();
+});
+
+showAllBtn.addEventListener('click', () => {
+    while (currentLevel < allLevels.length) {
+        showNextStep(true);
     }
+});
 
-    const container = document.getElementById('resolution-container');
-
+function showNextStep(showAll = false) {
     if (!showingLevel) {
-        // Neues Level starten
         const level = allLevels[currentLevel];
         const levelDiv = document.createElement('div');
         levelDiv.className = 'level-box';
@@ -70,26 +91,26 @@ document.getElementById('nextBtn').addEventListener('click', () => {
         setTimeout(() => levelDiv.classList.add('visible'), 50);
 
         showingLevel = true;
-        return;
+
+        if (!showAll) return; // bei showAll gleich alle Schritte anzeigen
     }
 
-    // Jetzt einen Schritt dieses Levels anzeigen
     const level = allLevels[currentLevel];
     const stepsDiv = document.getElementById(`steps-${currentLevel}`);
 
-    if (currentStep < level.steps.length) {
+    while (currentStep < level.steps.length) {
         const step = level.steps[currentStep];
         const li = document.createElement('li');
-        li.className = `step ${step.type}`;
+        li.className = `step ${step.type}`; // CSS-Klasse entspricht Backend-Typ
         li.textContent = `[${step.c1.join(', ')}], [${step.c2.join(', ')}], literal: ${step.literal}, type: ${step.type}`;
         stepsDiv.appendChild(li);
         setTimeout(() => li.classList.add('visible'), 50);
-
         currentStep++;
-        return;
+
+        if (!showAll) return; // bei Einzel-Schritt sofort stoppen
     }
 
-    // Alle Schritte sind angezeigt → neue Resolventen oder Abschluss
+    // Alle Schritte eines Levels gezeigt → neue Resolventen oder Abschluss
     const levelDiv = document.getElementById(`level-${currentLevel}`);
     if (level.new_resolvents.length > 0) {
         const newRes = document.createElement('div');
@@ -109,6 +130,7 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     showingLevel = false;
 
     if (currentLevel >= allLevels.length) {
-        document.getElementById('nextBtn').disabled = true;
+        nextBtn.disabled = true;
+        showAllBtn.disabled = true;
     }
-});
+}

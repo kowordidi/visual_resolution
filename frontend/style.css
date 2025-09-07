@@ -44,6 +44,7 @@ body {
         }
 
         .btn {
+            display: inline-block; 
             margin-top: 20px;
             padding: 10px 15px;
             background: #007bff;
@@ -63,9 +64,6 @@ body {
             background: #0056b3; /* etwas dunkler beim Hover */
         }
 
-        #nextBtn {
-            display: none;
-        }
 
         .step.cut_new {
             color: green;
