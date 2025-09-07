@@ -6,12 +6,13 @@
 </head>
 <body>
     <h1>Visuelle Resolution</h1>
-    <p>Das ist meine erste HTML-Seite auf localhost.</p>
+    <p>Gib deine Klauseln hier ein:</p>
 
-    <textarea id="userInput" rows="5" cols="40">[["A","B"],["!A","B"],["!B"]]</textarea>
+    <textarea id="userInput" rows="1" cols="50">[["A","B"],["!A","B"],["!B"]]</textarea>
     <button id="sendBtn">Senden</button>
 
-    <div id="response"></div>
+    <!-- <pre> sorgt dafür, dass Zeilenumbrüche und Einrückungen angezeigt werden -->
+    <pre id="response" style="background-color:#f0f0f0; padding:10px;"></pre>
 
     <script>
         document.getElementById('sendBtn').addEventListener('click', () => {
@@ -34,7 +35,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('response').innerText = 'Antwort: ' + JSON.stringify(data);
+                document.getElementById('response').textContent = JSON.stringify(data, null, 4);
             })
             .catch(error => {
                 console.error('Fehler:', error);
