@@ -3,80 +3,90 @@ body {
         }
 
         .level-box {
-            border: 1px solid #aaa;
-            padding: 10px;
-            margin: 15px 0;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
+    border: 1px solid #aaa;
+    padding: 10px;
+    margin: 15px 0;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
 
-        .level-box.visible {
-            opacity: 1;
-        }
+/* Container oben fixieren */
+#top-container {
+    position: sticky; /* oder fixed, je nach gewünschtem Verhalten */
+    top: 0; /* immer am oberen Rand */
+    background: white; /* Hintergrund, damit es über die Steps gelegt wird */
+    padding: 10px;
+    z-index: 1000; /* oben halten */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* optionaler Schatten */
+}
 
-        .new-resolvent {
-            color: green;
-            font-weight: bold;
-            margin-top: 10px;
-        }
+.level-box.visible {
+    opacity: 1;
+}
 
-        .clauses {
-            color: #0033cc;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+.new-resolvent {
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+}
 
-        .no-new {
-            color: red;
-            font-weight: bold;
-            margin-top: 10px;
-        }
+.clauses {
+    color: #0033cc;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
 
-        .step {
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
+.no-new {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
 
-        .step.visible {
-            opacity: 1;
-        }
+.step {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
 
-        .btn {
-            display: inline-block; 
-            margin-top: 20px;
-            padding: 10px 15px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+.step.visible {
+    opacity: 1;
+}
 
-        .btn:disabled {
-            background: gray;
-            cursor: not-allowed;
-        }
+.btn {
+    display: inline-block; 
+    margin-top: 20px;
+    padding: 10px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
 
-        .btn:hover:enabled {
-            background: #0056b3; /* etwas dunkler beim Hover */
-        }
+.btn:disabled {
+    background: gray;
+    cursor: not-allowed;
+}
+
+.btn:hover:enabled {
+    background: #0056b3; /* etwas dunkler beim Hover */
+}
 
 
-        .step.cut_new {
-            color: green;
-            font-weight: bold;
-        }
+.step.cut_new {
+    color: green;
+    font-weight: bold;
+}
 
-        .step.no_cut {
-            color: red;
-            font-weight: bold;
-        }
+.step.no_cut {
+    color: red;
+    font-weight: bold;
+}
 
-        .step.cut_known {
-            color: gray;
-            font-style: italic;
-        }
+.step.cut_known {
+    color: gray;
+    font-style: italic;
+}
 
