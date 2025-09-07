@@ -43,10 +43,8 @@ body {
             opacity: 1;
         }
 
-        #nextBtn {
-            display: none;
+        .btn {
             margin-top: 20px;
-            margin-right: 100px;
             padding: 10px 15px;
             background: #007bff;
             color: white;
@@ -54,13 +52,19 @@ body {
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            float: right;
-    
         }
 
-        #nextBtn:disabled {
+        .btn:disabled {
             background: gray;
             cursor: not-allowed;
+        }
+
+        .btn:hover:enabled {
+            background: #0056b3; /* etwas dunkler beim Hover */
+        }
+
+        #nextBtn {
+            display: none;
         }
 
         .step.cut_new {
