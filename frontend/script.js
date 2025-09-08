@@ -29,7 +29,6 @@ negateBtn.addEventListener('click', () => {
     userInput.focus();
 });
 
-
 sendBtn.addEventListener('click', () => {
     const rawInput = document.getElementById('userInput').value;
     const value = parseUserInput(rawInput);
@@ -51,7 +50,20 @@ sendBtn.addEventListener('click', () => {
     })
     .then(response => response.json())
     .then(data => {
-        allLevels = data;
+            // Formatiere die Klauseln direkt für die Anzeige
+        allLevels = data.map(level => {
+            return {
+                ...level,
+                clauses: formatForDisplay(level.clauses),
+                new_resolvents: formatForDisplay(level.new_resolvents),
+                steps: level.steps.map(step => ({
+                    ...step,
+                    c1: formatForDisplay([step.c1])[0],
+                    c2: formatForDisplay([step.c2])[0]
+                }))
+            };
+        });
+        console.log(allLevels);
         currentLevel = 0;
         currentStep = 0;
         showingLevel = false;
@@ -89,6 +101,17 @@ function parseUserInput(input) {
     return input;
 }
 
+function formatForDisplay(clauses) {
+    return clauses.map(clause => {
+        // Jedes Literal in der Klausel umwandeln
+        const formattedLiterals = clause.map(lit => {
+            return lit.startsWith('!') ? '¬' + lit.substring(1) : lit;
+        });
+        return `{${formattedLiterals.join(', ')}}`;
+    });
+}
+
+
 function showNextStep(showAll = false) {
     if (!showingLevel) {
         const level = allLevels[currentLevel];
@@ -100,10 +123,13 @@ function showNextStep(showAll = false) {
         levelTitle.textContent = `Level ${level.level}`;
         levelDiv.appendChild(levelTitle);
 
+        // bekannte Klauseln
         const clauseList = document.createElement('div');
         clauseList.className = 'clauses';
-        clauseList.textContent = 'Auf diesem Level bekannte Klauseln:' + '\n' + level.clauses.map(c => `[${c.join(', ')}]`).join(', ');
+        clauseList.innerHTML = '<strong>Bekannte Klauseln:</strong><br>' +
+            level.clauses.map((c, i) => `<span class="clause" id="clause-${currentLevel}-${i}">${c}</span>`).join(', ');
         levelDiv.appendChild(clauseList);
+
 
         const stepsDiv = document.createElement('ul');
         stepsDiv.id = `steps-${currentLevel}`;
@@ -124,7 +150,8 @@ function showNextStep(showAll = false) {
         const step = level.steps[currentStep];
         const li = document.createElement('li');
         li.className = `step ${step.type}`; // CSS-Klasse entspricht Backend-Typ
-        li.textContent = `[${step.c1.join(', ')}], [${step.c2.join(', ')}], literal: ${step.literal}`;
+
+        li.innerHTML = `${step.c1} und ${step.c2} über ${step.literal}`;
         stepsDiv.appendChild(li);
         setTimeout(() => li.classList.add('visible'), 50);
         currentStep++;
@@ -137,7 +164,7 @@ function showNextStep(showAll = false) {
     if (level.new_resolvents.length > 0) {
         const newRes = document.createElement('div');
         newRes.className = 'new-resolvent';
-        newRes.textContent = 'Neue Resolventen: ' + level.new_resolvents.map(c => `[${c.join(', ')}]`).join(', ');
+        newRes.textContent = 'Neue Resolventen: ' + level.new_resolvents.join(', ');
         levelDiv.appendChild(newRes);
     } else {
         const noNew = document.createElement('div');
