@@ -88,7 +88,7 @@ body {
 }
 
 .step.no_cut {
-    color: red;
+    color: orange;
     font-style: italic;
 }
 

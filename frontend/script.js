@@ -174,9 +174,13 @@ function showNextStep(showAll = false) {
         highlightClauses(currentLevel, step);
 
         const li = document.createElement('li');
+        const stepMessages = {
+            cut_new: `${step.c1} und ${step.c2} über ${step.literal} ==> ${step.literal}`,
+            cut_known: `Resolvente von ${step.c1} und ${step.c2} über ${step.literal} bereits bekannt:`,
+            no_cut: `kein Cut zwischen ${step.c1} und ${step.c2} über ${step.literal} möglich`
+        };
         li.className = `step ${step.type}`;
-        li.innerHTML = `${step.c1} und ${step.c2} über ${step.literal}` +
-            (step.type === 'cut_new' ? ` ==> ${step.resolvent}`: '');
+        li.innerHTML = stepMessages[step.type]
         stepsDiv.appendChild(li);
         setTimeout(() => li.classList.add('visible'), 50);
 
@@ -184,7 +188,7 @@ function showNextStep(showAll = false) {
         if (step.type === 'cut_new') {
             const resolventSpan = document.createElement('span');
             resolventSpan.className = 'new-resolvent';
-            resolventSpan.textContent = ` ${step.resolvent}`;
+            resolventSpan.textContent = ` ${step.resolvent}, `;
             newResContainer.appendChild(resolventSpan);
         }
 
