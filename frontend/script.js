@@ -17,6 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
 sendBtn.addEventListener('click', () => {
     const rawInput = document.getElementById('userInput').value;
     const value = parseUserInput(rawInput);
+    console.log('parsed input:' + value);
     let clauses;
     try {
         clauses = JSON.parse(value);
@@ -64,11 +65,11 @@ showAllBtn.addEventListener('click', () => {
 });
 
 function parseUserInput(input) {
+    input = input.replaceAll('¬', '!');
     // Füge Anführungszeichen um Symbole
-    input = input.replaceAll(/([A-Za-z!]+)/g, '"$1"');
+    input = input.replaceAll(/([A-Za-z0-9!]+)/g, '"$1"');
     input = input.replaceAll('{', '[');
     input = input.replaceAll('}', ']');
-    input = input.replaceAll('¬', '!');
     return input;
 }
 
