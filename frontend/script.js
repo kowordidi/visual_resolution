@@ -151,7 +151,8 @@ function showNextStep(showAll = false) {
         const li = document.createElement('li');
         li.className = `step ${step.type}`; // CSS-Klasse entspricht Backend-Typ
 
-        li.innerHTML = `${step.c1} und ${step.c2} über ${step.literal}`;
+        li.innerHTML = `${step.c1} und ${step.c2} über ${step.literal}` +
+            (step.type === 'cut_new' ? ` ===>  {${step.resolvent}}` : '');
         stepsDiv.appendChild(li);
         setTimeout(() => li.classList.add('visible'), 50);
         currentStep++;
