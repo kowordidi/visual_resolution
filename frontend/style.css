@@ -38,6 +38,13 @@ body {
     margin-bottom: 8px;
 }
 
+.clause.highlight {
+    background-color: yellow;
+    font-weight: bold;
+    border-radius: 3px;
+    padding: 0 2px;
+}
+
 .no-new {
     color: red;
     font-weight: bold;
@@ -82,7 +89,7 @@ body {
 
 .step.no_cut {
     color: red;
-    font-weight: bold;
+    font-style: italic;
 }
 
 .step.cut_known {

@@ -59,7 +59,8 @@ sendBtn.addEventListener('click', () => {
                 steps: level.steps.map(step => ({
                     ...step,
                     c1: formatForDisplay([step.c1])[0],
-                    c2: formatForDisplay([step.c2])[0]
+                    c2: formatForDisplay([step.c2])[0],
+                    resolvent: formatForDisplay([step.resolvent])[0]
                 }))
             };
         });
@@ -103,6 +104,7 @@ function parseUserInput(input) {
 
 function formatForDisplay(clauses) {
     return clauses.map(clause => {
+        if (!clause || clause.length === 0) return '∅';  // leere Klausel ersetzen
         // Jedes Literal in der Klausel umwandeln
         const formattedLiterals = clause.map(lit => {
             return lit.startsWith('!') ? '¬' + lit.substring(1) : lit;
@@ -110,6 +112,21 @@ function formatForDisplay(clauses) {
         return `{${formattedLiterals.join(', ')}}`;
     });
 }
+
+function highlightClauses(levelIndex, step) {
+    // Erst alle vorherigen Highlights entfernen
+    document.querySelectorAll(`#level-${levelIndex} .clause`).forEach(el => el.classList.remove('highlight'));
+
+    const level = allLevels[levelIndex];
+
+    // c1 und c2 in known clauses suchen
+    [step.c1, step.c2].forEach(clauseText => {
+        const span = Array.from(document.querySelectorAll(`#level-${levelIndex} .clause`))
+                          .find(el => el.textContent === clauseText);
+        if (span) span.classList.add('highlight');
+    });
+}
+
 
 
 function showNextStep(showAll = false) {
@@ -126,10 +143,15 @@ function showNextStep(showAll = false) {
         // bekannte Klauseln
         const clauseList = document.createElement('div');
         clauseList.className = 'clauses';
-        clauseList.innerHTML = '<strong>Bekannte Klauseln:</strong><br>' +
+        clauseList.innerHTML = '<strong>Bekannte Klauseln:</strong>' +
             level.clauses.map((c, i) => `<span class="clause" id="clause-${currentLevel}-${i}">${c}</span>`).join(', ');
         levelDiv.appendChild(clauseList);
 
+        // Container für neue Resolventen erstellen
+        const newResContainer = document.createElement('div');
+        newResContainer.className = 'new-resolvents-container';
+        newResContainer.innerHTML = '<strong>Neue Resolventen:</strong> ';
+        levelDiv.appendChild(newResContainer);
 
         const stepsDiv = document.createElement('ul');
         stepsDiv.id = `steps-${currentLevel}`;
@@ -145,33 +167,30 @@ function showNextStep(showAll = false) {
 
     const level = allLevels[currentLevel];
     const stepsDiv = document.getElementById(`steps-${currentLevel}`);
+    const newResContainer = document.querySelector(`#level-${currentLevel} .new-resolvents-container`);
 
     while (currentStep < level.steps.length) {
         const step = level.steps[currentStep];
-        const li = document.createElement('li');
-        li.className = `step ${step.type}`; // CSS-Klasse entspricht Backend-Typ
+        highlightClauses(currentLevel, step);
 
+        const li = document.createElement('li');
+        li.className = `step ${step.type}`;
         li.innerHTML = `${step.c1} und ${step.c2} über ${step.literal}` +
-            (step.type === 'cut_new' ? ` ===>  {${step.resolvent}}` : '');
+            (step.type === 'cut_new' ? ` ==> ${step.resolvent}`: '');
         stepsDiv.appendChild(li);
         setTimeout(() => li.classList.add('visible'), 50);
+
+        // Wenn dieser Step eine neue Resolvente erzeugt, dynamisch hinzufügen
+        if (step.type === 'cut_new') {
+            const resolventSpan = document.createElement('span');
+            resolventSpan.className = 'new-resolvent';
+            resolventSpan.textContent = ` ${step.resolvent}`;
+            newResContainer.appendChild(resolventSpan);
+        }
+
         currentStep++;
 
-        if (!showAll) return; // bei Einzel-Schritt sofort stoppen
-    }
-
-    // Alle Schritte eines Levels gezeigt → neue Resolventen oder Abschluss
-    const levelDiv = document.getElementById(`level-${currentLevel}`);
-    if (level.new_resolvents.length > 0) {
-        const newRes = document.createElement('div');
-        newRes.className = 'new-resolvent';
-        newRes.textContent = 'Neue Resolventen: ' + level.new_resolvents.join(', ');
-        levelDiv.appendChild(newRes);
-    } else {
-        const noNew = document.createElement('div');
-        noNew.className = 'no-new';
-        noNew.textContent = 'Keine neuen Klauseln mehr → Schnittregelabschluss vollständig';
-        levelDiv.appendChild(noNew);
+        if (!showAll) return;
     }
 
     // Nächstes Level vorbereiten
