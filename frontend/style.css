@@ -16,10 +16,10 @@ body {
 #top-container {
     position: sticky; /* oder fixed, je nach gewünschtem Verhalten */
     top: 0; /* immer am oberen Rand */
-    background: white; /* Hintergrund, damit es über die Steps gelegt wird */
+    background: rgb(166, 166, 164);
     padding: 10px;
     z-index: 1000; /* oben halten */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* optionaler Schatten */
+    box-shadow: 0 4px 5px rgba(0,0,0,0.1);
 }
 
 .level-box.visible {

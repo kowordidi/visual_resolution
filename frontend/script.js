@@ -8,10 +8,6 @@ const nextBtn = document.getElementById('nextBtn');
 const showAllBtn = document.getElementById('showAllBtn');
 const container = document.getElementById('resolution-container');
 
-console.log('sendBtn.disabled', sendBtn.disabled);
-console.log('nextBtn.disabled', nextBtn.disabled);
-console.log('showAllBtn.disabled', showAllBtn.disabled);
-
 window.addEventListener('DOMContentLoaded', () => {
     nextBtn.disabled = true;
     showAllBtn.disabled = true;
@@ -19,9 +15,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 sendBtn.addEventListener('click', () => {
-    const value = document.getElementById('userInput').value;
+    const rawInput = document.getElementById('userInput').value;
+    const value = parseUserInput(rawInput);
     let clauses;
-
     try {
         clauses = JSON.parse(value);
     } catch (err) {
@@ -66,6 +62,15 @@ showAllBtn.addEventListener('click', () => {
         showNextStep(true);
     }
 });
+
+function parseUserInput(input) {
+    // Füge Anführungszeichen um Symbole
+    input = input.replaceAll(/([A-Za-z!]+)/g, '"$1"');
+    input = input.replaceAll('{', '[');
+    input = input.replaceAll('}', ']');
+    input = input.replaceAll('¬', '!');
+    return input;
+}
 
 function showNextStep(showAll = false) {
     if (!showingLevel) {
