@@ -3,6 +3,7 @@ let currentLevel = 0;
 let currentStep = 0;
 let showingLevel = false;
 
+const negateBtn = document.getElementById('negateBtn');
 const sendBtn = document.getElementById('sendBtn');
 const nextBtn = document.getElementById('nextBtn');
 const showAllBtn = document.getElementById('showAllBtn');
@@ -11,6 +12,21 @@ const container = document.getElementById('resolution-container');
 window.addEventListener('DOMContentLoaded', () => {
     nextBtn.disabled = true;
     showAllBtn.disabled = true;
+});
+
+negateBtn.addEventListener('click', () => {
+    const start = userInput.selectionStart;
+    const end = userInput.selectionEnd;
+
+    // Text vor und nach dem Cursor zusammen mit ¬
+    const text = userInput.value;
+    userInput.value = text.slice(0, start) + '¬' + text.slice(end);
+
+    // Cursor direkt hinter das eingefügte ¬ setzen
+    userInput.selectionStart = userInput.selectionEnd = start + 1;
+    
+    // Fokus im Textfeld behalten
+    userInput.focus();
 });
 
 
@@ -86,7 +102,7 @@ function showNextStep(showAll = false) {
 
         const clauseList = document.createElement('div');
         clauseList.className = 'clauses';
-        clauseList.textContent = 'Klauseln: ' + level.clauses.map(c => `[${c.join(', ')}]`).join(', ');
+        clauseList.textContent = 'Auf diesem Level bekannte Klauseln:' + '\n' + level.clauses.map(c => `[${c.join(', ')}]`).join(', ');
         levelDiv.appendChild(clauseList);
 
         const stepsDiv = document.createElement('ul');
@@ -108,7 +124,7 @@ function showNextStep(showAll = false) {
         const step = level.steps[currentStep];
         const li = document.createElement('li');
         li.className = `step ${step.type}`; // CSS-Klasse entspricht Backend-Typ
-        li.textContent = `[${step.c1.join(', ')}], [${step.c2.join(', ')}], literal: ${step.literal}, type: ${step.type}`;
+        li.textContent = `[${step.c1.join(', ')}], [${step.c2.join(', ')}], literal: ${step.literal}`;
         stepsDiv.appendChild(li);
         setTimeout(() => li.classList.add('visible'), 50);
         currentStep++;
