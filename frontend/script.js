@@ -170,6 +170,10 @@ function showNextStep(showAll = false) {
     const newResContainer = document.querySelector(`#level-${currentLevel} .new-resolvents-container`);
 
     while (currentStep < level.steps.length) {
+        // Alle alten Steps, die nicht cut_new sind, entfernen
+        Array.from(stepsDiv.children).forEach(li => {
+            if (!li.classList.contains('cut_new')) li.remove();
+        });
         const step = level.steps[currentStep];
         highlightClauses(currentLevel, step);
 
@@ -190,6 +194,12 @@ function showNextStep(showAll = false) {
             resolventSpan.className = 'new-resolvent';
             resolventSpan.textContent = ` ${step.resolvent}, `;
             newResContainer.appendChild(resolventSpan);
+
+            // Pfeile von c1 und c2 zu der neuen Resolvente
+            const c1Span = Array.from(container.querySelectorAll('.clause')).find(el => el.textContent === step.c1);
+            const c2Span = Array.from(container.querySelectorAll('.clause')).find(el => el.textContent === step.c2);
+            drawArrow(c1Span, resolventSpan);
+            drawArrow(c2Span, resolventSpan);
         }
 
         currentStep++;
@@ -207,3 +217,51 @@ function showNextStep(showAll = false) {
         showAllBtn.disabled = true;
     }
 }
+
+function drawArrow(fromEl, toEl) {
+    const container = fromEl.closest('.level-box');
+
+    const fromRect = fromEl.getBoundingClientRect();
+    const toRect = toEl.getBoundingClientRect();
+    const parentRect = container.getBoundingClientRect();
+
+    const startX = fromRect.right - parentRect.left;
+    const startY = fromRect.top + fromRect.height / 2 - parentRect.top;
+    const endX = toRect.left - parentRect.left;
+    const endY = toRect.top + toRect.height / 2 - parentRect.top;
+
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("class", "arrow-svg");
+    svg.setAttribute("style", `position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;`);
+
+    const line = document.createElementNS(svgNS, "line");
+    line.setAttribute("x1", startX);
+    line.setAttribute("y1", startY);
+    line.setAttribute("x2", endX);
+    line.setAttribute("y2", endY);
+    line.setAttribute("stroke", "#555");      // etwas helleres Grau
+    line.setAttribute("stroke-width", 1.5);   // dünner
+    line.setAttribute("marker-end", "url(#arrowhead)");
+
+    svg.appendChild(line);
+
+    const defs = document.createElementNS(svgNS, "defs");
+    const marker = document.createElementNS(svgNS, "marker");
+    marker.setAttribute("id", "arrowhead");
+    marker.setAttribute("markerWidth", "5");   // kleiner
+    marker.setAttribute("markerHeight", "4");  // kleiner
+    marker.setAttribute("refX", "5");
+    marker.setAttribute("refY", "2");
+    marker.setAttribute("orient", "auto");
+    
+    const polygon = document.createElementNS(svgNS, "polygon");
+    polygon.setAttribute("points", "0 0, 5 2, 0 4"); // kleinere Spitze
+    polygon.setAttribute("fill", "#555");             // dezentes Grau
+    marker.appendChild(polygon);
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+
+    container.appendChild(svg);
+}
+
