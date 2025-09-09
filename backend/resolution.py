@@ -13,14 +13,14 @@ def resolvent(c1, c2, lit):
         return list(sorted(set(res)))
     raise ValueError(f"Literal '{lit}' kommt nicht komplementär in {c1} und {c2} vor")
 
-def all_resolvents(c1, c2, known_clauses):
+def all_resolvents(c1, c2, known_clauses, found_in_this_level):
     steps = []
     new_resolvents = []
     for lit in c1:
         nlit = negate(lit)
         if nlit in c2:
             res = resolvent(c1, c2, lit)
-            if res in known_clauses:
+            if res in known_clauses or res in found_in_this_level:
                 steps.append({
                     "type": "cut_known",
                     "c1": c1, "c2": c2,
@@ -34,7 +34,7 @@ def all_resolvents(c1, c2, known_clauses):
                     "literal": lit,
                     "resolvent": res
                 })
-                new_resolvents.append(res)
+                new_resolvents.append(res)   
         else:
             steps.append({
                 "type": "no_cut",
@@ -46,12 +46,14 @@ def all_resolvents(c1, c2, known_clauses):
 def resolution_level(clauses, known_clauses):
     level_steps = []
     new_resolvents = []
+    found_in_this_level = []
     for c1, c2 in combinations(clauses, 2):
-        steps, new_res = all_resolvents(c1, c2, known_clauses)
+        steps, new_res = all_resolvents(c1, c2, known_clauses, found_in_this_level)
         level_steps.extend(steps)
         for r in new_res:
             if r not in new_resolvents:
                 new_resolvents.append(r)
+                found_in_this_level.append(r)
     return level_steps, new_resolvents
 
 def full_resolution(initial_clauses):
