@@ -179,7 +179,7 @@ function showNextStep(showAll = false) {
 
         const li = document.createElement('li');
         const stepMessages = {
-            cut_new: `${step.c1} und ${step.c2} über ${step.literal} ==> ${step.literal}`,
+            cut_new: `${step.c1} und ${step.c2} über ${step.literal} ==> ${step.resolvent}`,
             cut_known: `Resolvente von ${step.c1} und ${step.c2} über ${step.literal} bereits bekannt:`,
             no_cut: `kein Cut zwischen ${step.c1} und ${step.c2} über ${step.literal} möglich`
         };
