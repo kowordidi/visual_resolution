@@ -196,8 +196,9 @@ function showNextStep(showAll = false) {
             newResContainer.appendChild(resolventSpan);
 
             // Pfeile von c1 und c2 zu der neuen Resolvente
-            const c1Span = Array.from(container.querySelectorAll('.clause')).find(el => el.textContent === step.c1);
-            const c2Span = Array.from(container.querySelectorAll('.clause')).find(el => el.textContent === step.c2);
+            const levelDiv = document.getElementById(`level-${currentLevel}`);
+            const c1Span = Array.from(levelDiv.querySelectorAll('.clause')).find(el => el.textContent === step.c1);
+            const c2Span = Array.from(levelDiv.querySelectorAll('.clause')).find(el => el.textContent === step.c2);
             drawArrow(c1Span, resolventSpan);
             drawArrow(c2Span, resolventSpan);
         }
