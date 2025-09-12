@@ -1,6 +1,7 @@
 # Visual Resolution
 
-Web-App zur Visualisierung logischer Resolution – alles direkt im Browser, kein Backend nötig.
+Web-App zur Visualisierung logischer Resolution in Aussagenlogik – alles direkt im Browser, kein Backend nötig.  
+Enstanden im Rahmen des Tutoriums zum Modul "Logik" an der Universität Rostock
 
 ## Live
 
@@ -8,5 +9,10 @@ Web-App zur Visualisierung logischer Resolution – alles direkt im Browser, kei
 
 ## Nutzung
 
-Eingabe im Format:
+Eingabe im Format: {{A,B},{¬A,B},{¬B}}
+
+
+## Lizenz
+
+MIT
 
