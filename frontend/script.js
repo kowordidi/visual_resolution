@@ -1,3 +1,5 @@
+import { fullResolution } from './resolution.js';
+
 let allLevels = [];
 let currentLevel = 0;
 let currentStep = 0;
@@ -47,17 +49,9 @@ sendBtn.addEventListener('click', () => {
         return;
     }
 
-    fetch('http://127.0.0.1:5000/resolve', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ clauses })
-    })
-    .then(response => response.json())
-    .then(data => {
-            // Formatiere die Klauseln direkt für die Anzeige
-        allLevels = data.map(level => {
+    const data = fullResolution(clauses);
+     // Formatiere die Klauseln direkt für die Anzeige
+    allLevels = data.map(level => {
             return {
                 ...level,
                 clauses: formatForDisplay(level.clauses),
@@ -70,23 +64,19 @@ sendBtn.addEventListener('click', () => {
                 }))
             };
         });
-        console.log(allLevels);
-        currentLevel = 0;
-        currentStep = 0;
-        showingLevel = false;
-        container.innerHTML = '';
+        
+    console.log(allLevels);
+    currentLevel = 0;
+    currentStep = 0;
+    showingLevel = false;
+    container.innerHTML = '';
 
-        // Buttons nach erfolgreichem Laden aktivieren
-        nextBtn.disabled = false;
-        showAllBtn.disabled = false;
+    // Buttons nach erfolgreichem Laden aktivieren
+    nextBtn.disabled = false;
+    showAllBtn.disabled = false;
 
-        // einmal automatisch die erste Zeile aufdecken
-        showNextStep();
-
-    })
-    .catch(error => {
-        console.error('Fehler:', error);
-    });
+    // einmal automatisch die erste Zeile aufdecken
+    showNextStep();
 });
 
 nextBtn.addEventListener('click', () => {
@@ -184,7 +174,7 @@ function showNextStep(showAll = false) {
         const li = document.createElement('li');
         const stepMessages = {
             cut_new: `${step.c1} und ${step.c2} über ${step.literal} ==> ${step.resolvent}`,
-            cut_known: `Resolvente von ${step.c1} und ${step.c2} über ${step.literal} bereits bekannt:`,
+            cut_known: `Resolvente ${step.resolvent} von ${step.c1} und ${step.c2} über ${step.literal} bereits bekannt:`,
             no_cut: `kein Cut zwischen ${step.c1} und ${step.c2} über ${step.literal} möglich`
         };
         li.className = `step ${step.type}`;

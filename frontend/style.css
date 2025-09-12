@@ -1,112 +1,170 @@
-body {
-            font-family: Arial, sans-serif;
-        }
-
-        .level-box {
-    border: 1px solid #aaa;
-    padding: 10px;
-    margin: 15px 0;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    opacity: 0;
-    transition: opacity 0.8s ease;
+/* ==========
+   Basis-Setup
+   ========== */
+:root {
+  --primary: #007bff;
+  --primary-dark: #0056b3;
+  --success: #2ecc71;
+  --warning: #e67e22;
+  --error: #e74c3c;
+  --neutral: #95a5a6;
+  --bg-light: #f5f6fa;
+  --bg-white: #ffffff;
+  --text-dark: #333;
+  --text-light: #666;
+  --radius: 12px;
+  --shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  --transition: 0.3s ease;
 }
 
-/* Container oben fixieren */
+body {
+  font-family: "Inter", Arial, sans-serif;
+  color: var(--text-dark);
+  background: var(--bg-light);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  animation: fadeIn 0.6s ease;
+}
+
+h1, h2, h3 {
+  font-family: "Roboto Slab", serif;
+  color: #222;
+  margin: 0 0 15px;
+}
+
+/* ==========
+   Container oben fixieren
+   ========== */
 #top-container {
-    position: sticky; /* oder fixed, je nach gewünschtem Verhalten */
-    top: 0; /* immer am oberen Rand */
-    background: rgb(166, 166, 164);
-    padding: 10px;
-    z-index: 1000; /* oben halten */
-    box-shadow: 0 4px 5px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  background: #fff;
+  padding: 12px 20px;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* ==========
+   Level-Boxen
+   ========== */
+.level-box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: var(--bg-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: var(--transition), transform 0.2s ease;
+  position: relative;
 }
 
 .level-box.visible {
-    opacity: 1;
+  opacity: 1;
 }
 
-.new-resolvent {
-    color: green;
-    font-weight: bold;
-    margin-top: 10px;
+.level-box:hover {
+  transform: translateY(-3px);
 }
 
+/* ==========
+   Klauseln / Resolventen
+   ========== */
 .clauses {
-    color: #0033cc;
-    font-weight: bold;
-    margin-bottom: 40px;
+  color: rgb(88, 208, 255);
+  font-weight: bold;
+  margin-bottom: 40px;
 }
 
 .clause.highlight {
-    background-color: yellow;
-    font-weight: bold;
-    border-radius: 4px;
-    padding: 2px 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25); /* leichter Schatten */
-    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  color: var(--primary-dark);
+  background-color: var(--bg-white);
+  font-weight: bold;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: var(--transition);
+  /*padding: 4px 6px;*/
 }
 
-.level-box {
-    position: relative;
+.new-resolvent {
+  color: var(--success);
+  font-weight: bold;
+  margin-top: 10px;
 }
-
-.arrow-svg {
-    stroke: black;
-}
-
-
-
 
 .no-new {
-    color: red;
-    font-weight: bold;
-    margin-top: 10px;
+  color: var(--error);
+  font-weight: bold;
+  margin-top: 10px;
 }
 
+/* ==========
+   Schritte / Statusfarben
+   ========== */
 .step {
-    opacity: 0;
-    transition: opacity 0.5s ease;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
 .step.visible {
-    opacity: 1;
+  opacity: 1;
 }
-
-.btn {
-    display: inline-block; 
-    margin-top: 20px;
-    padding: 10px 15px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.btn:disabled {
-    background: gray;
-    cursor: not-allowed;
-}
-
-.btn:hover:enabled {
-    background: #0056b3; /* etwas dunkler beim Hover */
-}
-
 
 .step.cut_new {
-    color: green;
-    font-weight: bold;
+  color: var(--success);
+  font-weight: bold;
 }
 
 .step.no_cut {
-    color: orange;
-    font-style: italic;
+  color: var(--warning);
+  font-style: italic;
 }
 
 .step.cut_known {
-    color: gray;
-    font-style: italic;
+  color: var(--neutral);
+  font-style: italic;
 }
 
+/* ==========
+   Buttons
+   ========== */
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, background 0.3s;
+}
+
+.btn:disabled {
+  background: var(--neutral);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn:hover:enabled {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #006ae6, #004494);
+}
+
+/* ==========
+   Pfeile / SVG
+   ========== */
+.arrow-svg {
+  stroke: black;
+}
+
+/* ==========
+   Animationen
+   ========== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
