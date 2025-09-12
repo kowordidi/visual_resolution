@@ -1,10 +1,12 @@
 # Visual Resolution
 
-## Useful terminal commands
-- Activate Virtual Environment:  
-`source .venv/bin/activate`
-- Start Server  
-`python3 app.py`  
-Server will be available locally under: http://127.0.0.1:5000
-- discard local changes and go back to last commit  
-`git reset --hard HEAD`
+Web-App zur Visualisierung logischer Resolution – alles direkt im Browser, kein Backend nötig.
+
+## Live
+
+[https://kowordidi.github.io/visual_resolution/](https://kowordidi.github.io/visual-resolution/)
+
+## Nutzung
+
+Eingabe im Format:
+
