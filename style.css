@@ -131,28 +131,21 @@ h1, h2, h3 {
    ========== */
 .btn {
   display: inline-block;
-  margin-top: 20px;
-  padding: 12px 18px;
+  margin-top: 10px;
+  padding: 6px 10px;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
   border: none;
   border-radius: var(--radius);
   font-size: 16px;
   cursor: pointer;
-  box-shadow: var(--shadow);
   transition: transform 0.2s, background 0.3s;
 }
 
 .btn:disabled {
   background: var(--neutral);
-  cursor: not-allowed;
-  box-shadow: none;
 }
 
-.btn:hover:enabled {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #006ae6, #004494);
-}
 
 /* ==========
    Pfeile / SVG
